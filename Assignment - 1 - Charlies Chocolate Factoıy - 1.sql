@@ -24,12 +24,10 @@ CREATE TABLE [Product].[component] (
 )
 
 CREATE TABLE [Product].[prod_comp] (
-    prod_id INT,
-    comp_id INT,
+    prod_id INT not null,
+    comp_id INT not null,
     quantity_comp INT,
-        CONSTRAINT pk3 FOREIGN KEY (prod_id, comp_id),
-        CONSTRAINT fk1 FOREIGN KEY (prod_id),
-        CONSTRAINT fk2 FOREIGN KEY (comp_id)
+        CONSTRAINT pk3 PRIMARY KEY (prod_id, comp_id),
 )
 
 --schema Supplier
@@ -39,7 +37,7 @@ CREATE TABLE [Supplier].[supplier] (
     supp_name VARCHAR(50),
     supp_location VARCHAR(50),
     supp_country VARCHAR(50),
-    is_active LOGICAL,
+    is_active BIT,
         CONSTRAINT pk1 PRIMARY KEY (supp_id)
 )
 
@@ -48,8 +46,10 @@ CREATE TABLE [Supplier].[comp_supp] (
     comp_id INT,
     oder_date DATE,
     quantity INT,
-        CONSTRAINT pk3 FOREIGN KEY (supp_id, comp_id),
-        CONSTRAINT fk1 FOREIGN KEY (supp_id),
-        CONSTRAINT fk2 FOREIGN KEY (comp_id)
+        CONSTRAINT pk3 PRIMARY KEY (supp_id, comp_id)
 )
 
+ALTER TABLE Product.prod_comp ADD FOREIGN KEY (prod_id) REFERENCES Product.product(prod_id);
+ALTER TABLE Product.prod_comp ADD FOREIGN KEY (comp_id) REFERENCES Product.component(comp_id);
+ALTER TABLE Supplier.comp_supp ADD FOREIGN KEY (supp_id) REFERENCES Supplier.supplier(supp_id);
+ALTER TABLE Supplier.comp_supp ADD FOREIGN KEY (comp_id) REFERENCES Product.component(comp_id);
